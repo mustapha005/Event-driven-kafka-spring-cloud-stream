@@ -1,0 +1,29 @@
+Projet : Event-driven Kafka avec Spring Cloud Stream
+Mainteneur : Mustapha Aarab <mostaphaaarabe663@gmail.com>
+
+Depuis la racine du projet :
+
+1. Demarrer Kafka et ZooKeeper :
+docker compose up -d
+
+2. Lister les topics depuis le conteneur Kafka :
+docker compose exec broker kafka-topics --bootstrap-server broker:29092 --list
+
+3. Lire les visites produites dans T6 :
+docker compose exec broker kafka-console-consumer --bootstrap-server broker:29092 --topic T6
+
+4. Lire les compteurs de T7 (valeurs de type Long) :
+docker compose exec broker kafka-console-consumer --bootstrap-server broker:29092 --topic T7 --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+
+5. Produire un evenement JSON dans T1 pour le consommateur de console :
+docker compose exec broker kafka-console-producer --bootstrap-server broker:29092 --topic T1
+Puis saisir une ligne JSON, par exemple :
+{"name":"P1","user":"U1","date":"2026-10-25T10:00:00.000+00:00","duration":150}
+
+6. Publier un evenement via HTTP (application demarree sur le port 8080) :
+curl.exe "http://localhost:8080/publish?name=P1&topic=T6"
+
+7. Arreter les conteneurs de ce projet :
+docker compose down
+
+Depuis Windows, les outils Kafka installes localement utilisent --bootstrap-server localhost:9092.
